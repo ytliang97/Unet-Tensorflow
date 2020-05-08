@@ -3,7 +3,7 @@
 Generator and Discriminator network.
 """
 import tensorflow as tf
-import utils
+from model import utils
 
 # Define Unet, you can refer to http://blog.csdn.net/u014722627/article/details/60883185 or 
 # https://github.com/zhixuhao/unet

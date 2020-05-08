@@ -8,12 +8,14 @@ import logging
 import time
 from datetime import datetime
 import tensorflow as tf
-from models import Unet
-from utils import save_images
+
+
 
 import sys
-sys.path.append("../data")
-from data import read_tfrecords
+#sys.path.append("../data")
+from model import read_tfrecords
+from model.models import Unet
+from model.utils import save_images
 # load test image
 import numpy as np
 import cv2
@@ -116,7 +118,7 @@ class UNet(object):
         # Utilize TFRecord file to load data. change the tfrecords name for different datasets.
         # define class Read_TFRecords object.
         tf_reader = read_tfrecords.Read_TFRecords(filename=os.path.join(self.training_set, 
-            "Carvana.tfrecords"),
+            "Carvana_train.tfrecord"),
             batch_size=batch_size, image_h=self.image_h, image_w=self.image_w, 
             image_c=self.image_c)
 
@@ -131,7 +133,7 @@ class UNet(object):
             # train
             c_time = time.time()
             lrval = self.learning_rate
-            for c_step in xrange(step_num + 1, training_steps + 1):
+            for c_step in range(step_num + 1, training_steps + 1):
                 # learning rate, adjust lr
                 if c_step % 5000 == 0:
                     lrval = self.learning_rate * .5
@@ -216,6 +218,7 @@ class UNet(object):
         image_name = glob.glob(os.path.join(self.testing_set, "*.jpg"))
         
         # In tensorflow, test image must divide 255.0.
+        print(image_name)
         image = np.reshape(cv2.resize(cv2.imread(image_name[0], 0), 
             (self.image_h, self.image_w)), (1, self.image_h, self.image_w, self.image_c)) / 255.
         # OpenCV load image. the data format is BGR, w.t., (H, W, C). The default load is channel=3.

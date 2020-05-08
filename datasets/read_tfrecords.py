@@ -34,13 +34,13 @@ class Read_TFRecords(object):
         # Now, will have two Features.
         features = tf.parse_single_example(serialized_example,
             features={
-                "image_raw": tf.FixedLenFeature([], tf.string),
-                "image_label": tf.FixedLenFeature([], tf.string),
+                'image/encoded': tf.FixedLenFeature([], tf.string),
+                'image/segmentation/class/encoded': tf.FixedLenFeature([], tf.string),
             })
        
-        image_raw = tf.image.decode_jpeg(features["image_raw"], channels=self.image_c, 
+        image_raw = tf.image.decode_jpeg(features['image/encoded'], channels=self.image_c, 
             name="decode_image")
-        image_label = tf.image.decode_jpeg(features["image_label"], channels=self.image_c, 
+        image_label = tf.image.decode_jpeg(features['image/segmentation/class/encoded'], channels=self.image_c, 
             name="decode_image")
         # not need Crop and other random augmentations.
         # image resize and transform type.

@@ -13,7 +13,7 @@ def main(_):
     tf_flags = tf.app.flags.FLAGS
     # gpu config.
     config = tf.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 0.5
+    #config.gpu_options.per_process_gpu_memory_fraction = 0.5
     # config.gpu_options.allow_growth = True
 
     if tf_flags.phase == "train":

@@ -1,0 +1,7 @@
+__pycache__
+*.jpg
+*.gif
+*.png
+.DS_Store
+*.tfrecord
+model_output_*
