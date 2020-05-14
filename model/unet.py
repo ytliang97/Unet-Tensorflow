@@ -118,7 +118,7 @@ class UNet(object):
         # Utilize TFRecord file to load data. change the tfrecords name for different datasets.
         # define class Read_TFRecords object.
         tf_reader = read_tfrecords.Read_TFRecords(filename=os.path.join(self.training_set, 
-            "Carvana_train.tfrecord"),
+            "Carvana.tfrecords"),
             batch_size=batch_size, image_h=self.image_h, image_w=self.image_w, 
             image_c=self.image_c)
 
@@ -216,6 +216,7 @@ class UNet(object):
     def test(self):
         # Test only in a image.
         image_name = glob.glob(os.path.join(self.testing_set, "*.jpg"))
+        
         
         # In tensorflow, test image must divide 255.0.
         print(image_name)
