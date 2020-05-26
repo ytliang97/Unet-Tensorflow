@@ -23,7 +23,7 @@ tf.app.flags.DEFINE_string(
     'Folder containing annotations for trainng images')
 
 tf.app.flags.DEFINE_string(
-    'output_dir', './BraTS_2019',
+    'build_datadir', './BraTS_2019',
     'Path to save converted tfrecord of Tensorflow example')
 
 
@@ -33,7 +33,7 @@ def _convert_dataset(dataset_split, dataset_dir, dataset_label_dir):
     datas.sort()
     
     output_filename = '%s_%s.tfrecord' % ('BraTS_2019', dataset_split)
-    output_filename = os.path.join(FLAGS.output_dir, output_filename)
+    output_filename = os.path.join(FLAGS.build_datadir, output_filename)
     with tf.python_io.TFRecordWriter(output_filename) as tfrecord_writer:
         count = 0
         total = 0
@@ -68,8 +68,8 @@ def _convert_dataset(dataset_split, dataset_dir, dataset_label_dir):
 
 
 def main(_):
-    if not tf.gfile.IsDirectory(FLAGS.output_dir):
-        tf.gfile.MakeDirs(FLAGS.output_dir)
+    if not tf.gfile.IsDirectory(FLAGS.build_datadir):
+        tf.gfile.MakeDirs(FLAGS.build_datadir)
     _convert_dataset('train', FLAGS.train_image_folder, FLAGS.train_label_folder)
 
 if __name__ == '__main__':

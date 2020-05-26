@@ -1,18 +1,77 @@
-# -*- coding:utf-8 -*-
-"""
-Generator and Discriminator network.
-"""
+"""Generator and Discriminator network."""
 import tensorflow as tf
 from model import utils
 
 # Define Unet, you can refer to http://blog.csdn.net/u014722627/article/details/60883185 or 
 # https://github.com/zhixuhao/unet
 def Unet(name, in_data, reuse=False):
+    """
+    crop1               +        up9 -> merge9 -> conv10
+
+      crop2          +       up8 -> merge8
+
+        crop3      +      up7 -> merge7
+
+          crop4  +   up6 -> merge6
+
+               drop5
+
+
+
+
+
+    Layer                     filters        kernel      params
+    -----------------------------------------------------------
+    Unet/conv2d/conv1_1         64            3x3
+    Unet/conv2d/conv1_2         64            3x3
+    Unet/Cropping2D/crop1
+    Unet/max_pooling2d/pool1
+    Unet/conv2d/conv2_1         128           3x3
+    Unet/conv2d/conv2_2         128           3x3
+    Unet/Cropping2D/crop2
+    Unet/max_pooling2d/pool2
+    Unet/conv2d/conv3_1         256           3x3
+    Unet/conv2d/conv3_2         256           3x3
+    Unet/Cropping2D/crop3
+    Unet/max_pooling2d/pool3
+    Unet/conv2d/conv4_1         512           3x3
+    Unet/conv2d/conv4_2         512           3x3
+    Unet/Cropping2D/crop4
+    Unet/max_pooling2d/pool4
+    Unet/conv2d/conv5_1         1024          3x3
+    Unet/conv2d/conv5_2         1024          3x3
+    Unet/dropout/drop5
+    Unet/UpSampling2D/up6_1
+    Unet/conv2d/up6             512           2x2
+    Unet/concat/merge6
+    Unet/conv2d/conv6_1         512           3x3
+    Unet/conv2d/conv6_2         512           3x3
+    Unet/UpSampling2D/up7_1
+    Unet/conv2d/up7             256           2x2
+    Unet/concat/merge7
+    Unet/conv2d/conv7_1         256           3x3
+    Unet/conv2d/conv7_2         256           3x3
+    Unet/UpSampling2D/up8_1
+    Unet/conv2d/up8             128           2x2
+    Unet/concat/merge8
+    Unet/conv2d/conv8_1         128           3x3
+    Unet/conv2d/conv8_2         128           3x3
+    Unet/UpSampling2D/up9_1
+    Unet/conv2d/up9             64            2x2
+    Unet/concat/merge9
+    Unet/conv2d/conv9_1         64            3x3
+    Unet/conv2d/conv9_2         64            3x3
+    Unet/conv2d/conv9_3         2             3x3
+    Unet/conv2d/conv10          1             1x1
+    """
     # Not use BatchNorm or InstanceNorm.
     assert in_data is not None
     with tf.variable_scope(name, reuse=reuse):
         # Conv1 + Crop1
-        conv1_1 = tf.layers.conv2d(in_data, 64, 3, activation=tf.nn.relu,
+        conv1_1 = tf.layers.conv2d(in_data, 
+                                   filters=64, 
+                                   kernel_size=3, 
+                                   activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0)) # Use Xavier init.
         # Arguments: inputs, filters, kernel_size, strides((1, 1)), padding(VALID). 
@@ -28,16 +87,16 @@ def Unet(name, in_data, reuse=False):
         tf.variance_scaling_initializer class. Initializer capable of adapting its scale to the shape of weights tensors.
         Args:
         scale: Scaling factor (positive float). default 1.
-        mode: One of "fan_in", "fan_out", "fan_avg". default 'fan_in'.
-        distribution: Random distribution to use. One of "normal", "uniform". default "normal".
+        mode: One of 'fan_in', 'fan_out', 'fan_avg'. default 'fan_in'.
+        distribution: Random distribution to use. One of 'normal', 'uniform'. default 'normal'.
         seed: A Python integer. Used to create random seeds.
 
-        With distribution="normal", from a normal distribution mean zero, with stddev = sqrt(scale / n), where n is
-        the number of input units in the weight tensor, if mode = "fan_in".
-        the number of output units, if mode = "fan_out".
-        average of the numbers of input and output units, if mode = "fan_avg".
+        With distribution='normal', from a normal distribution mean zero, with stddev = sqrt(scale / n), where n is
+        the number of input units in the weight tensor, if mode = 'fan_in'.
+        the number of output units, if mode = 'fan_out'.
+        average of the numbers of input and output units, if mode = 'fan_avg'.
 
-        With distribution="uniform", from a uniform distribution within [-limit, limit], 
+        With distribution='uniform', from a uniform distribution within [-limit, limit], 
         with limit = sqrt(3 * scale / n).
 
         So, we can set kernel_initializer = tf.variance_scaling_initializer(scale=2.0)
@@ -116,7 +175,7 @@ def Unet(name, in_data, reuse=False):
         Class UpSampling2D, Upsampling layer for 2D inputs. Arguments:
         size: int, or tuple of 2 integers. The upsampling factors for rows and columns.
         '''
-        up6 = tf.layers.conv2d(up6_1, 512, 2, padding="SAME", activation=tf.nn.relu,
+        up6 = tf.layers.conv2d(up6_1, 512, 2, padding='SAME', activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
         merge6 = tf.concat([crop4, up6], axis=3) # concat channel
@@ -131,7 +190,7 @@ def Unet(name, in_data, reuse=False):
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
 
         up7_1 = tf.keras.layers.UpSampling2D(size=(2, 2))(conv6_2)
-        up7 = tf.layers.conv2d(up7_1, 256, 2, padding="SAME", activation=tf.nn.relu,
+        up7 = tf.layers.conv2d(up7_1, 256, 2, padding='SAME', activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
         merge7 = tf.concat([crop3, up7], axis=3) # concat channel
@@ -145,7 +204,7 @@ def Unet(name, in_data, reuse=False):
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
 
         up8_1 = tf.keras.layers.UpSampling2D(size=(2, 2))(conv7_2)
-        up8 = tf.layers.conv2d(up8_1, 128, 2, padding="SAME", activation=tf.nn.relu,
+        up8 = tf.layers.conv2d(up8_1, 128, 2, padding='SAME', activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
         merge8 = tf.concat([crop2, up8], axis=3) # concat channel
@@ -159,7 +218,7 @@ def Unet(name, in_data, reuse=False):
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
 
         up9_1 = tf.keras.layers.UpSampling2D(size=(2, 2))(conv8_2)
-        up9 = tf.layers.conv2d(up9_1, 64, 2, padding="SAME", activation=tf.nn.relu,
+        up9 = tf.layers.conv2d(up9_1, 64, 2, padding='SAME', activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
         merge9 = tf.concat([crop1, up9], axis=3) # concat channel
@@ -171,7 +230,7 @@ def Unet(name, in_data, reuse=False):
         conv9_2 = tf.layers.conv2d(conv9_1, 64, 3, activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
-        conv9_3 = tf.layers.conv2d(conv9_2, 2, 3, padding="SAME", activation=tf.nn.relu,
+        conv9_3 = tf.layers.conv2d(conv9_2, 2, 3, padding='SAME', activation=tf.nn.relu,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
 

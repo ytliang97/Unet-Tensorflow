@@ -1,20 +1,18 @@
-# -*- coding:utf-8 -*-
-"""
-Read TFRecords file.
-"""
+"""Read TFRecords file."""
 import os
 import tensorflow as tf
 import numpy as np
 import scipy.misc
 
 class Read_TFRecords(object):
-    def __init__(self, filename, batch_size=64,
-        image_h=256, image_w=256, image_c=1, num_threads=8, capacity_factor=3, min_after_dequeue=1000):
-        '''
+    def __init__(self, filename, batch_size=64, image_h=256, 
+          image_w=256, image_c=1, num_threads=8, capacity_factor=3, 
+          min_after_dequeue=1000):
+        """
         filename: TFRecords file path.
         num_threads: TFRecords file load thread.
         capacity_factor: capacity.
-        '''
+        """
         self.filename = filename
         self.batch_size = batch_size
         self.image_h = image_h
@@ -39,9 +37,9 @@ class Read_TFRecords(object):
             })
        
         image_raw = tf.image.decode_jpeg(features['image/encoded'], channels=self.image_c, 
-            name="decode_image")
+            name='decode_image')
         image_label = tf.image.decode_jpeg(features['image/segmentation/class/encoded'], channels=self.image_c, 
-            name="decode_image")
+            name='decode_image')
         # not need Crop and other random augmentations.
         # image resize and transform type.
         # Utilize tf.gfile.FastGFile() to generate TFRecords file, in this way, it could use resize_images directly.
