@@ -47,7 +47,7 @@ class UNet(object):
         # train
         if is_training:
             #self.training_set = FLAGS.dataset_dir
-            self.sample_dir = 'train_results'
+            self.sample_dir = os.path.join(FLAGS.train_logdir, 'train_results')
 
             # makedir aux dir
             self._make_aux_dirs()
@@ -168,8 +168,8 @@ class UNet(object):
 
                     e_time = time.time() - c_time
                     time_periter = e_time / summary_steps
-                    logging.info('{}: Iteration_{} ({:.4f}s/iter) {}'.format(
-                        datetime.now(), c_step, time_periter,
+                    logging.info('Iteration_{} ({:.4f}s/iter) {}'.format(
+                        c_step, time_periter,
                         self._print_summary(c_summary)))
                     c_time = time.time() # update time
 
@@ -186,8 +186,8 @@ class UNet(object):
                         [self.input_data, self.output, self.input_masks],
                         feed_dict=c_feed_dict)
                     save_images(None, output_masks, input_masks,
-                        input_path = './{}/input_{:04d}.png'.format(self.sample_dir, c_step),
-                        image_path = './{}/train_{:04d}.png'.format(self.sample_dir, c_step))
+                        input_path = '{}/input_{:04d}.png'.format(self.sample_dir, c_step),
+                        image_path = '{}/train_{:04d}.png'.format(self.sample_dir, c_step))
         except KeyboardInterrupt:
             print('Interrupted')
             self.coord.request_stop()

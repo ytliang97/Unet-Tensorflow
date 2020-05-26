@@ -6,11 +6,24 @@ import tensorflow as tf
 import numpy as np
 # import scipy.misc
 import cv2
+import matplotlib.pyplot as plt
 
 def save_images(input, output1, output2, input_path, image_path, max_samples=4):
+    
+    #plt.subplot(1,2,1)
+    #plt.title('output mask')
+    #plt.imshow(output1[0,:,:,0])
+    #plt.subplot(1,2,2)
+    #plt.title('input mask')
+    #plt.imshow(output2[0,:,:,0])
+    #plt.show()
+    #print('output mask', np.unique(output1[0,:,:,0]))
+    #print('input mask', np.unique(output2[0,:,:,0]))
+
     image = np.concatenate([output1, output2], axis=2) # concat 4D array, along width.
     if max_samples > int(image.shape[0]):
     	max_samples = int(image.shape[0])
+    print(max_samples)
     
     image = image[0:max_samples, :, :, :]
     image = np.concatenate([image[i, :, :, :] for i in range(max_samples)], axis=0)

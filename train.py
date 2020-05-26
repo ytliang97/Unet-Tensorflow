@@ -77,6 +77,7 @@ def main(_):
             # return numpy ndarray.
             
             # save two images.
+            print('\n\n\n\n???\n\n\n\n')
             filename_A = 'input.png'
             filename_B = 'output_masks.png'
             

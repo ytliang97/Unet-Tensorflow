@@ -37,7 +37,7 @@ def _convert_dataset(dataset_split, dataset_dir, dataset_label_dir):
                 print('total', total, 'file(s), process', idx, 'file(s).')
 
             data_path = os.path.join(dataset_dir, image_name)
-            label_path = os.path.join(dataset_label_dir, image_name[:-4] + '_mask.jpg')
+            label_path = os.path.join(dataset_label_dir, image_name[:-4] + '_mask.png')
 
             image_data = tf.gfile.GFile(data_path, 'rb').read()
             seg_data = tf.gfile.GFile(label_path, 'rb').read()

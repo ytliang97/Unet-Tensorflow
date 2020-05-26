@@ -56,7 +56,7 @@ class ImageReader(object):
     """Class constructor.
 
     Args:
-      image_format: Image format. Only 'jpeg', 'jpg', or 'png' are supported.
+      image_format: Image format. Only 'jpeg', 'jpg', 'png', or 'gif' are supported.
       channels: Image channels.
     """
     with tf.Graph().as_default():
@@ -101,6 +101,58 @@ class ImageReader(object):
 
     return image
 
+class ImageWriter(object):
+  """Helper class that provides TensorFlow image coding utilities."""
+
+  def __init__(self, image_format='jpeg'):
+    """Class constructor.
+
+    Args:
+      image_format: Image format. Only 'jpeg', 'jpg', or 'png' are supported.
+      channels: Image channels.
+    """
+    with tf.Graph().as_default():
+      self._encode_data = tf.placeholder(dtype=tf.uint8)
+      self._image_format = image_format
+      self._session = tf.Session()
+      if self._image_format in ('jpeg', 'jpg'):
+        self._encode = tf.image.encode_jpeg(self._encode_data,
+                                            format='rgb',
+                                            quality=100)
+      elif self._image_format == 'png':
+        self._encode = tf.image.encode_png(self._encode_data)
+
+
+  def read_image_dims(self, image_data):
+    """Reads the image dimensions.
+
+    Args:
+      image_data: array of image data.
+
+    Returns:
+      image_height and image_width.
+    """
+    return image_data.shape[:2]
+
+  def encode_image(self, image_data):
+    """encodes the image data string.
+
+    Args:
+      image_data: array of image data.
+
+    Returns:
+      encoded image data.
+
+    Raises:
+      ValueError: Value of image channels not supported.
+    """
+    if len(image_data.shape) != 3 or image_data.shape[2] not in (1, 3):
+      raise ValueError('The image channels not supported.')
+    else:
+      image = self._session.run(self._encode,
+                              feed_dict={self._encode_data: image_data})
+    
+    return image
 
 def _int64_list_feature(values):
   """Returns a TF-Feature of int64_list.

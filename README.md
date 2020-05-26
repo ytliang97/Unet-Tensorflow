@@ -10,6 +10,8 @@ Change Category:
 
 + **C**: update repository architecture
 
++ **D**: DEBUG
+
 ## Getting-Start
 ### e.g. Carvana data
 + Step1. Download Carvana dataset from kaggle
@@ -25,7 +27,9 @@ python3 build_Carvana_to_tfrecord.py --train_image_folder ./Carvana/train --trai
 python3 tfrecord2image_carvana_format.py --tfrecord_path datasets/Carvana/Carvana_train.tfrecord
 ```
 + Step4. setting parameter to train the model
+
 Recommend models directory naming: Target_Arch_lossName_datasetName_InputDimenstion_InputWidth_InputHeight_version
+
 e.g. CarSeg_UNet_CE_Carvana_2D_512_512_v1
 ```shell
 # this is for testing, not the best settings

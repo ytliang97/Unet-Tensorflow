@@ -5,6 +5,7 @@ import copy
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import numpy as np
 
 
 flags = tf.app.flags
@@ -87,7 +88,7 @@ def main(_):
                 plt.subplot(1,2,2)
                 plt.imshow(label[:,:,0])
                 plt.show()
-                print(filename, height, width)
+                print(filename, height, width, 'label number: ', np.unique(label))
 
                 break
 
