@@ -10,5 +10,4 @@ checkpoint='model-30'
 python3 main.py --train_logdir=$train_logdir \
                --phase=$phase \
                --test_dataset=$test_dataset \
-               --checkpoint=$checkpoint
 

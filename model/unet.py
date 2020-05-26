@@ -231,6 +231,7 @@ class UNet(object):
         # Test only in a image.
         image_name = glob.glob(os.path.join(self.test_dataset, '*.jpg'))
         
+        
         # In tensorflow, test image must divide 255.0.
         print(image_name)
         image = np.reshape(cv2.resize(cv2.imread(image_name[0], 0), 
