@@ -40,7 +40,7 @@ class Read_TFRecords(object):
        
         image_raw = tf.image.decode_jpeg(features['image/encoded'], channels=self.image_c, 
             name="decode_image")
-        image_label = tf.image.decode_png(features['image/segmentation/class/encoded'], 
+        image_label = tf.image.decode_png(features['image/segmentation/class/encoded'], channels=1,
             name="decode_image")
         # not need Crop and other random augmentations.
         # image resize and transform type.

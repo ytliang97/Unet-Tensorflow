@@ -3,7 +3,7 @@
 
 ## Model
 ### 05-26-2020
-#### [CarSeg_UNet_CE_2D_512_512_v1](./logs/CarSeg_UNet_CE_2D_512_512_v1.log)
+#### [CarSeg_UNet_CE_2D_512_512_v1](./logs/CarSeg_UNet_CE_Carvana_2D_512_512_v1.log)
 
 Dataset: Carvana
 
