@@ -20,6 +20,7 @@ Change Category:
 + D-2: 在`model/unet.py`加入檢查model output的min/max值
 + B-9: 修改`model/utils.py`的儲存訓練快照格式
 + C-4: 新增`tfrecord2image_brats_2019_format.py`
++ D-3: 補除以1.0，因tf.cast(data, tf.float32)沒有真的將data轉為float型態
 
 Future work:
 + B-10: 加入validation資料

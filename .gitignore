@@ -6,3 +6,5 @@ __pycache__
 *.tfrecord
 model_output_*
 logs/*
+*/.ipynb_checkpoints
+.ipynb_checkpoints

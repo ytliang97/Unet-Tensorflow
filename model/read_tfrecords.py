@@ -54,7 +54,7 @@ class Read_TFRecords(object):
             # 324 * 324 * 1. But is not good.
 
         image_raw = tf.cast(image_raw, tf.float32) / 255.0 # convert to float32
-        image_label = tf.cast(image_label, tf.float32)# / 255.0 # convert to float32
+        image_label = tf.cast(image_label, tf.float32) / 1.0# / 255.0 # convert to float32
 
         # tf.train.batch/tf.train.shuffle_batch object.
         # Using asynchronous queues
