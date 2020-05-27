@@ -28,22 +28,22 @@ tf.app.flags.DEFINE_string(
 
 
 def _convert_dataset(dataset_split, dataset_dir, dataset_label_dir):
-    datas = os.listdir(dataset_dir)
-    datas[:] = [x for x in datas if not x.startswith('.')]
-    datas.sort()
+    filenames = os.listdir(dataset_dir)
+    filenames[:] = [x for x in filenames if not x.startswith('.')]
+    filenames.sort()
     
     output_filename = '%s_%s.tfrecord' % ('BraTS_2019', dataset_split)
     output_filename = os.path.join(FLAGS.build_datadir, output_filename)
     with tf.python_io.TFRecordWriter(output_filename) as tfrecord_writer:
         count = 0
         total = 0
-        for idx, data in enumerate(datas):
+        for idx, filename in enumerate(filenames):
             if idx % 5 == 0:
                 print('total', total, 'file(s), process', count, 'file(s).')
             entry = {}
-            entry['filename'] = data
-            label = data.split('.')[0][:-4] + 'seg.nii.gz'
-            entry['data_path'] = os.path.join(dataset_dir, data)
+            entry['filename'] = filename
+            label = filename.split('.')[0][:-4] + 'seg.nii.gz'
+            entry['data_path'] = os.path.join(dataset_dir, filename)
             entry['label_path'] = os.path.join(dataset_label_dir, label)
             if os.path.isfile(entry['label_path']):
                 count += 1

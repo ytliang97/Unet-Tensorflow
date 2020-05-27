@@ -14,6 +14,16 @@ Change Category:
 + **C**: update repository architecture
 + **D**: DEBUG
 
+### May 28, 2020
++ B-7: 修改`datasets/build_BraTS_2019_to_tfrecord.py`變數名稱
++ B-8: `model/read_tfrecords.py`的`image_label`改為不除以255
++ D-2: 在`model/unet.py`加入檢查model output的min/max值
++ B-9: 修改`model/utils.py`的儲存訓練快照格式
++ C-4: 新增`tfrecord2image_brats_2019_format.py`
+
+Future work:
++ B-10: 加入validation資料
++ C-5: 解構`model/read_tfrecord.py`，使可適應新增資料集
 
 ### May 27, 2020
 + D-1: 發現transform_image.py並沒有將gif正確轉至jpg，label不是[0, 255]，而是漸變(不論使用pyplot, pillow, cv2儲存再讀取皆會出錯)，原因是因為jpg是有損壓縮，儲存後再載入會有差異，將label格式轉為png

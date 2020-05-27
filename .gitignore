@@ -5,4 +5,4 @@ __pycache__
 .DS_Store
 *.tfrecord
 model_output_*
-
+logs/*
