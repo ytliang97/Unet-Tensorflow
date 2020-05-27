@@ -17,8 +17,8 @@ def save_images(input, output1, output2, input_path, image_path, max_samples=4):
     #plt.title('input mask')
     #plt.imshow(output2[0,:,:,0])
     #plt.show()
-    #print('output mask', np.unique(output1[0,:,:,0]))
-    #print('input mask', np.unique(output2[0,:,:,0]))
+    print('output mask', output1[0,:,:,0].min(), output1[0,:,:,0].max())
+    print('input mask', output2[0,:,:,0].min(), output2[0,:,:,0].max())
 
     image = np.concatenate([output1, output2], axis=2) # concat 4D array, along width.
     if max_samples > int(image.shape[0]):

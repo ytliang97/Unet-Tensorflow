@@ -159,7 +159,6 @@ class UNet(object):
                 print('batch_images shape: ', np.shape(batch_images))
                 print('batch_images_masks shape: ', np.shape(batch_images_masks))
                 self.sess.run(self.opt, feed_dict=c_feed_dict)
-                print('output mask min/max', np.min(self.output.eval()), np.max(self.output.eval()))
                 print('output mask shape: ', np.shape(self.output))
 
                 # save summary
