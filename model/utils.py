@@ -10,15 +10,15 @@ import matplotlib.pyplot as plt
 
 def save_images(input, output1, output2, input_path, image_path, max_samples=4):
     
-    #plt.subplot(1,2,1)
-    #plt.title('output mask')
-    #plt.imshow(output1[0,:,:,0])
-    #plt.subplot(1,2,2)
-    #plt.title('input mask')
-    #plt.imshow(output2[0,:,:,0])
-    #plt.show()
-    #print('output mask', np.unique(output1[0,:,:,0]))
-    #print('input mask', np.unique(output2[0,:,:,0]))
+    plt.subplot(1,2,1)
+    plt.title('output mask')
+    plt.imshow(output1[0,:,:,0])
+    plt.subplot(1,2,2)
+    plt.title('input mask')
+    plt.imshow(output2[0,:,:,0])
+    plt.show()
+    print('output mask', np.unique(output1[0,:,:,0]))
+    print('input mask', np.unique(output2[0,:,:,0]))
 
     image = np.concatenate([output1, output2], axis=2) # concat 4D array, along width.
     if max_samples > int(image.shape[0]):
@@ -32,7 +32,8 @@ def save_images(input, output1, output2, input_path, image_path, max_samples=4):
     # save image.
     # scipy.misc.toimage(), array is 2D(gray, reshape to (H, W)) or 3D(RGB).
     # scipy.misc.toimage(image, cmin=0., cmax=1.).save(image_path) # image_path contain image path and name.
-    cv2.imwrite(image_path, np.uint8(image.clip(0., 1.) * 255.))
+    #cv2.imwrite(image_path, np.uint8(image.clip(0., 1.) * 255.))
+    plt.imsave(image_path, image)
 
     # save input
     if input is not None:

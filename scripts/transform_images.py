@@ -33,6 +33,7 @@ def main():
         #print('convert mode: ', np.unique(image))
         #image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         #print('cvtColor: ', np.unique(image))
+        image[image == 255] = 1
         image_path = os.path.join(transform_datadir, image_name[:-4] + '.png')
         #image = np.uint8(image)
         skio.imsave(image_path, image)

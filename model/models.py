@@ -235,7 +235,7 @@ def Unet(name, in_data, reuse=False):
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
 
         # Conv10
-        conv10 = tf.layers.conv2d(conv9_3, 1, 1,
+        conv10 = tf.layers.conv2d(conv9_3, 1, 1, activation=tf.nn.sigmoid,
             kernel_initializer = tf.contrib.layers.xavier_initializer())
             # kernel_initializer = tf.variance_scaling_initializer(scale=2.0))
         # 1 channel.
